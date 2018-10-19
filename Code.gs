@@ -1,7 +1,7 @@
 // vim: ft=javascript
 
 /*
- * To set up this onboarding flow for your Brigade, first create a Google Form for
+ * To set up this onboarding flow for your Organization, first create a Google Form for
  * the onboarding survey you'll use during meetings.
  *
  * This form must have a field called "Email Address".
@@ -11,22 +11,22 @@
 /*
  * 1. Customize these variables!
  */
-var BRIGADE_NAME = 'Open Oakland';
-var SLACK_URL = 'https://openoakland.slack.com';
+var ORGANIZATION_NAME = 'Civic Data Alliance';
+var SLACK_URL = 'https://civicdataalliance.slack.com';
 // Get this from: https://api.slack.com/custom-integrations/legacy-tokens
 var SLACK_TOKEN = 'xoxp-xxxxxxxx-xxxxxxxx';
 // User who will receive notifications when someone signs up for slack but they've already
 // got an account.
 var SLACK_ERROR_USERNAME = '@tdooner';
 // The post-onboarding followup survey:
-var SURVEY_LINK_URL = 'https://www.openoakland.org/hack-night-survey';
+var SURVEY_LINK_URL = 'https://www.civicdataalliance.org/hack-night-survey';
 // The part from the URL of the combined Onboarding/Followup Spreadsheet
 var CONTACT_INFO_SHEET_ID = '1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 // The name of the sheet that collects responses from the onboarding form.
 var CONTACT_INFO_SHEET_NAME = 'Onboarding Responses';
 var EMAIL_SENDER_NAME = 'Tom Dooner';
 var EMAIL_SENDER_SIGNATURE = 'Hack Night Lead';
-var EMAIL_SUBJECT = 'Good to meet you at ' + BRIGADE_NAME;
+var EMAIL_SUBJECT = 'Good to meet you at ' + ORGANIZATION_NAME;
 // Use an email that isn't already registered in your Slack:
 var EMAIL_DEBUG_ADDRESS = 'tomdooner+emaildebug@gmail.com';
 
@@ -48,12 +48,12 @@ function _sendEmail(name, email, wantsSurvey) {
 
     return [
       "Hey " + name + ",",
-      "On behalf of the " + BRIGADE_NAME +" leadership team, we're glad you stopped by our hack night yesterday!",
+      "On behalf of the " + ORGANIZATION_NAME +" leadership team, we're glad you stopped by our hack night yesterday!",
       "Since you mentioned you might be willing to answer a quick survey about your experience, I wanted " +
         (isPlainText ? "" : "<a href='" + SURVEY_LINK_URL + "'>") + "to invite you to take this 2-minute survey" +
         (isPlainText ? "" : "</a>") + ". Your feedback will help us improve hack night for others.",
       (isPlainText ? SURVEY_LINK_URL : ''),
-      "Thanks again for coming to our event and feel free to reply with any questions you might have about " + BRIGADE_NAME + "!",
+      "Thanks again for coming to our event and feel free to reply with any questions you might have about " + ORGANIZATION_NAME + "!",
       "Best," + br + EMAIL_SENDER_NAME + br + EMAIL_SENDER_SIGNATURE
     ].filter(function (i) { return i.length > 0 }).join(br + br);
   };
@@ -91,10 +91,10 @@ function _inviteToSlack(event) {
     var successMessage = "Successfully sent a Slack invitation to " + email + "!";
     _sendSlackMessage(successMessage);
   } else if (responseJson.error === "sent_recently") {
-    var errorMessage = "Failed to invite " + email + " to the " + BRIGADE_NAME + " Slack because they were just invited. Maybe they filled out the form twice?";
+    var errorMessage = "Failed to invite " + email + " to the " + ORGANIZATION_NAME + " Slack because they were just invited. Maybe they filled out the form twice?";
     _sendSlackMessage(errorMessage);
   } else if (responseJson.error === "already_in_team") {
-    var errorMessage = "Failed to invite " + email + " to the " + BRIGADE_NAME + " Slack because they are already a member. Maybe they joined at a previous event? They should go through the forgotten password flow.";
+    var errorMessage = "Failed to invite " + email + " to the " + ORGANIZATION_NAME + " Slack because they are already a member. Maybe they joined at a previous event? They should go through the forgotten password flow.";
     _sendSlackMessage(errorMessage);
   } else {
     var errorMessage = "Unknown error inviting " + email + " to Slack: " + responseJson.error + ".";
@@ -117,7 +117,7 @@ function _sendSlackMessage(text) {
     followRedirects: true,
     muteHttpExceptions: true
   };
-  
+
   var response = UrlFetchApp.fetch(url, options);
   var success = response.getResponseCode() == 200 && JSON.parse(response.getContentText())['ok'];
   var responseJson = JSON.parse(response.getContentText());
@@ -130,7 +130,7 @@ function _loadSheetAttendees(afterDate) {
   var sheet = SpreadsheetApp.openById(CONTACT_INFO_SHEET_ID).getSheetByName(CONTACT_INFO_SHEET_NAME);
   var data = sheet.getDataRange().getValues();
   var headers = data.shift();
-  var surveyHeaderIdx = headers.indexOf("Would you be willing to take a short survey about your experience at " + BRIGADE_NAME + "?");
+  var surveyHeaderIdx = headers.indexOf("Would you be willing to take a short survey about your experience at " + ORGANIZATION_NAME + "?");
 
   if (surveyHeaderIdx === -1) {
     throw new Error("Could not find Survey question in form");
@@ -185,9 +185,9 @@ function prepare() {
   }
   emailBody += "</ul>";
 
-  GmailApp.sendEmail(EMAIL_DEBUG_ADDRESS, "Welcome to your Brigade Recipients", "", {
+  GmailApp.sendEmail(EMAIL_DEBUG_ADDRESS, "Welcome to your Organization Recipients", "", {
     htmlBody: emailBody,
-    name: "Brigade Email Bot"
+    name: "Organization Email Bot"
   });
 }
 
