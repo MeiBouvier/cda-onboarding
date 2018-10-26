@@ -12,12 +12,12 @@
  * 1. Customize these variables!
  */
 var ORGANIZATION_NAME = 'Civic Data Alliance';
-var SLACK_URL = 'https://civicdataalliance.slack.com';
+var SLACK_URL = 'https://civicdataally.slack.com';
 // Get this from: https://api.slack.com/custom-integrations/legacy-tokens
 var SLACK_TOKEN = 'xoxp-xxxxxxxx-xxxxxxxx';
 // User who will receive notifications when someone signs up for slack but they've already
 // got an account.
-var SLACK_ERROR_USERNAME = '@tdooner';
+var SLACK_ERROR_USERNAME = '@margeaux';
 // The post-onboarding followup survey:
 var SURVEY_LINK_URL = 'https://www.civicdataalliance.org/hack-night-survey';
 // The part from the URL of the combined Onboarding/Followup Spreadsheet
